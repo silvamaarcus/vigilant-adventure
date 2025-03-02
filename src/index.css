@@ -18,5 +18,6 @@
 @theme {
   --color-sidebar: #1E1E21;
   --color-gray-light: #62626C;
+  --color-gray-dark: #605C5C;
   --font-primary: "Inter", sans-serif;
 }

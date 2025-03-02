@@ -1,14 +1,19 @@
 import { Menu, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Play, Pause } from "lucide-react";
+
 interface Station {
   id: string;
   name: string;
-  url: string;
+  url_resolved: string;
 }
 
 export default function Sidebar() {
   const [stations, setStations] = useState<Station[]>([]);
+  const [selectedStation, setSelectedStation] = useState<string | null>(null);
+
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     async function fetchStations() {
@@ -26,6 +31,18 @@ export default function Sidebar() {
 
     fetchStations();
   }, []);
+
+  const togglePlay = () => {
+    const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
+    if (!audio) return;
+
+    if (playing) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setPlaying(!playing);
+  };
 
   return (
     <div className="flex h-screen w-full">
@@ -46,14 +63,12 @@ export default function Sidebar() {
             {stations.length > 0 ? (
               stations.map((station) => (
                 <li key={station.id}>
-                  <a
-                    href={station.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-gray-light block rounded-lg p-2 hover:opacity-80"
+                  <button
+                    onClick={() => setSelectedStation(station.url_resolved)}
+                    className="bg-gray-light block w-full rounded-lg p-2 text-left hover:opacity-80"
                   >
                     {station.name}
-                  </a>
+                  </button>
                 </li>
               ))
             ) : (
@@ -74,6 +89,30 @@ export default function Sidebar() {
               Search stations
             </button>
           </div>
+        </div>
+
+        {/* Player de rádio */}
+        <div className="bg-gray-light border-gray-dark mt-10 flex items-center justify-center gap-4 rounded-lg border-b p-4 text-black">
+          {selectedStation ? (
+            <>
+              <button
+                onClick={togglePlay}
+                className="text-white hover:opacity-80 cursor-pointer"
+              >
+                {playing ? (
+                  <Pause size={28} color="#000" fill="#000" />
+                ) : (
+                  <Play size={28} color="#000" fill="#000" />
+                )}
+              </button>
+              <p className="mr-4 text-lg font-semibold uppercase">
+                {stations.find((s) => s.url_resolved === selectedStation)?.name}
+              </p>
+              <audio id="radioPlayer" src={selectedStation}></audio>
+            </>
+          ) : (
+            <p className="text-gray-400">Selecione uma estação para ouvir.</p>
+          )}
         </div>
       </main>
     </div>

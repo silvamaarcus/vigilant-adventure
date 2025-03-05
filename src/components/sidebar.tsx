@@ -105,7 +105,7 @@ export function Sidebar() {
                 </li>
               ))
             ) : (
-              <li className="text-gray-400">Carregando estações...</li>
+              <li className="text-gray-400">Loading stations...</li>
             )}
           </ul>
         </nav>

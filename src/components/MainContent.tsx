@@ -24,10 +24,10 @@ export const MainContent = () => {
     setEditedCountry,
     setEditedTags,
   } = useRadioStore();
-  
+
   return (
     <>
-      <main className="flex-1 bg-transparent sm:px-11 sm:py-8 py-4 px-2">
+      <main className="flex-1 bg-transparent px-2 py-4 sm:px-11 sm:py-8">
         {/* Header */}
         <h2 className="text-center text-3xl font-semibold">Radio Browser</h2>
         <div className="mt-4 flex items-center justify-between">
@@ -63,7 +63,9 @@ export const MainContent = () => {
               ></audio>
             </>
           ) : (
-            <p className="text-gray-400">Selecione uma estação para ouvir.</p>
+            <p className="text-gray-400">
+              Select the station to listen to now.
+            </p>
           )}
         </div>
 
@@ -93,8 +95,11 @@ export const MainContent = () => {
                   <span className="text-lg font-semibold">{station.name}</span>
                   <span>
                     {station.country}
-                    {station.tags && ", "}
-                    {station.tags}
+                    {station.tags &&
+                      station.tags.split(",").slice(0, 2).length > 0 &&
+                      ", "}
+                    {station.tags &&
+                      station.tags.split(",").slice(0, 2).join(", ")}
                   </span>
                 </div>
 

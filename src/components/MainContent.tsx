@@ -4,7 +4,7 @@ import Modal from "react-modal";
 
 import { useRadioStore } from "../stores/useRadioStore";
 
-export const Main = () => {
+export const MainContent = () => {
   const {
     selectedStation,
     playing,

@@ -1,7 +1,9 @@
 import { useEffect } from "react";
-import { MainContent } from "./components/MainContent";
-import { Sidebar } from "./components/Sidebar";
+
 import { useRadioStore } from "./stores/useRadioStore";
+
+import { MainContent } from "./components/MainContent";
+import { SidebarComponent} from "./components/Sidebar";
 
 function App() {
   const { favoriteStations, setStations } = useRadioStore();
@@ -19,7 +21,7 @@ function App() {
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <SidebarComponent />
       <MainContent />
     </div>
   );

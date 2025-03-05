@@ -22,6 +22,7 @@ export default function Sidebar() {
   const [editedCountry, setEditedCountry] = useState("");
   const [editedTags, setEditedTags] = useState("");
 
+  // Função para buscar estações
   useEffect(() => {
     async function fetchStations() {
       try {
@@ -38,17 +39,7 @@ export default function Sidebar() {
     fetchStations();
   }, []);
 
-  useEffect(() => {
-    const savedStations = localStorage.getItem("favoriteStations");
-    if (savedStations) {
-      setFavoriteStations(JSON.parse(savedStations));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("favoriteStations", JSON.stringify(favoriteStations));
-  }, [favoriteStations]);
-
+  // Função para adicionar estações aos favoritos
   const addToFavorites = (station: Station) => {
     // Verificando se a estação já existe nos favoritos
     const stationExists = favoriteStations.some(
@@ -65,6 +56,7 @@ export default function Sidebar() {
     }
   };
 
+  // Função para remover estações dos favoritos
   const removeFromFavorites = (stationId: string) => {
     setFavoriteStations((prevFavorites) => {
       const updatedFavorites = prevFavorites.filter(
@@ -74,6 +66,7 @@ export default function Sidebar() {
     });
   };
 
+  // Função para tocar a radio
   const togglePlay = () => {
     const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
     if (!audio) return;
@@ -85,9 +78,9 @@ export default function Sidebar() {
       audio.play();
       setPlaying(true);
     }
-    // setPlaying(!playing);
   };
 
+  // Função para selecionar uma estação
   const handleStationSelection = (stationUrl: string) => {
     const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
     if (audio && selectedStation) {
@@ -98,6 +91,7 @@ export default function Sidebar() {
     setPlaying(true);
   };
 
+  // Função para abrir o modal de edição
   const openEditModal = (station: Station) => {
     setEditingStation(station);
     setEditedName(station.name);
@@ -106,6 +100,7 @@ export default function Sidebar() {
     setModalIsOpen(true);
   };
 
+  // Função para salvar as alterações no modal de edição
   const handleEditSave = () => {
     if (!editingStation) return;
 
@@ -125,8 +120,22 @@ export default function Sidebar() {
     setModalIsOpen(false);
   };
 
+  // Função para adicionar estações aos favoritos ao carregar a página
+  useEffect(() => {
+    const savedStations = localStorage.getItem("favoriteStations");
+    if (savedStations) {
+      setFavoriteStations(JSON.parse(savedStations));
+    }
+  }, []);
+
+  // Salvando estações favoritas no localStorage
+  useEffect(() => {
+    localStorage.setItem("favoriteStations", JSON.stringify(favoriteStations));
+  }, [favoriteStations]);
+
   return (
     <div className="flex h-screen w-full">
+      {/* Sidebar */}
       <aside className="bg-sidebar w-64 p-4 text-white">
         <div className="flex justify-end">
           <button className="cursor-pointer hover:opacity-80">
@@ -164,7 +173,9 @@ export default function Sidebar() {
         </nav>
       </aside>
 
+      {/* Main */}
       <main className="flex-1 bg-transparent px-11 py-8">
+        {/* Header */}
         <h2 className="text-center text-3xl font-semibold">Radio Browser</h2>
         <div className="mt-1 flex items-center justify-between">
           <p className="uppercase">Favorite Radios</p>
@@ -175,7 +186,7 @@ export default function Sidebar() {
             </button>
           </div>
         </div>
-
+        {/* Player principal */}
         <div className="bg-gray-default border-gray-dark mt-10 flex items-center gap-4 rounded-t-lg border-b-2 px-11 py-4 text-black">
           {selectedStation ? (
             <>
@@ -203,6 +214,7 @@ export default function Sidebar() {
           )}
         </div>
 
+        {/* Lista de estações favoritas */}
         <ul className="bg-gray-default space-y-2 rounded-b-lg px-1 py-4">
           {favoriteStations.map((station) => {
             const isPlaying =
@@ -252,6 +264,7 @@ export default function Sidebar() {
           })}
         </ul>
 
+        {/* Modal de edição */}
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={() => setModalIsOpen(false)}

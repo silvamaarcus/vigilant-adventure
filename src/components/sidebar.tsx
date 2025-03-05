@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Menu, Star } from "lucide-react";
+import { Check, Menu, Star } from "lucide-react";
 import { useRadioStore } from "../stores/useRadioStore";
 
 export default function Sidebar() {
@@ -9,13 +9,14 @@ export default function Sidebar() {
     // selectedStation,
     addToFavorites,
     setSelectedStation,
+    favoriteStations,
   } = useRadioStore();
 
   useEffect(() => {
     async function fetchStations() {
       try {
         const response = await fetch(
-          "https://de1.api.radio-browser.info/json/stations/search?limit=10",
+          "https://de1.api.radio-browser.info/json/stations/search?limit=10&order=votes&reverse=true",
         );
         const data = await response.json();
         setStations(data);
@@ -26,6 +27,12 @@ export default function Sidebar() {
 
     fetchStations();
   }, [setStations]);
+
+  const isStationFavorite = (stationUrl: string) => {
+    return favoriteStations.some(
+      (favStation) => favStation.url_resolved === stationUrl,
+    );
+  };
 
   return (
     <aside className="bg-sidebar w-64 p-4 text-white">
@@ -42,10 +49,14 @@ export default function Sidebar() {
       />
 
       <nav className="mt-4">
-        <ul className="space-y-3">
+        <span className="flex items-stretch space-x-2">
+          <Star size={24} color="yellow" fill="yellow" />
+          <h2 className="text-lg font-semibold">Top 10</h2>
+        </span>
+        <ul className="mt-2 space-y-3">
           {stations.length > 0 ? (
             stations.map((station) => (
-              <li key={station.id} className="relative">
+              <li key={station.id} className="group relative">
                 <button
                   onClick={() => setSelectedStation(station.url_resolved)}
                   className="bg-gray-light block w-full rounded-lg p-2 text-left hover:opacity-80"
@@ -56,7 +67,22 @@ export default function Sidebar() {
                   onClick={() => addToFavorites(station)}
                   className="absolute top-1/2 right-2 -translate-y-1/2"
                 >
-                  <Star size={20} color="yellow" />
+                  {isStationFavorite(station.url_resolved) ? (
+                    <Check size={28} color="blue" />
+                  ) : (
+                    <>
+                      <Check
+                        size={28}
+                        color="transparent"
+                        className="group-hover:hidden"
+                      />
+                      <Check
+                        size={28}
+                        color="blue"
+                        className="hidden group-hover:block"
+                      />
+                    </>
+                  )}
                 </button>
               </li>
             ))

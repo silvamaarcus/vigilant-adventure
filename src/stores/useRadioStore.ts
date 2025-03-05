@@ -24,6 +24,7 @@ interface RadioStore {
   setEditedName: (name: string) => void;
   setEditedCountry: (country: string) => void;
   setEditedTags: (tags: string) => void;
+  isFavorite: (stationUrl: string) => boolean;
 }
 
 export const useRadioStore = create<RadioStore>((set, get) => ({
@@ -132,4 +133,10 @@ export const useRadioStore = create<RadioStore>((set, get) => ({
   setEditedName: (name) => set({ editedName: name }),
   setEditedCountry: (country) => set({ editedCountry: country }),
   setEditedTags: (tags) => set({ editedTags: tags }),
+  isFavorite: (stationUrl) => {
+    const { favoriteStations } = get();
+    return favoriteStations.some(
+      (station) => station.url_resolved === stationUrl,
+    );
+  },
 }));

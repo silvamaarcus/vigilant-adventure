@@ -27,20 +27,20 @@ export const MainContent = () => {
   
   return (
     <>
-      <main className="flex-1 bg-transparent px-11 py-8">
+      <main className="flex-1 bg-transparent sm:px-11 sm:py-8 py-4 px-2">
         {/* Header */}
         <h2 className="text-center text-3xl font-semibold">Radio Browser</h2>
-        <div className="mt-1 flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between">
           <p className="uppercase">Favorite Radios</p>
-          <div>
+          <div className="hidden md:block">
             <button className="flex cursor-pointer items-center gap-1 hover:opacity-80">
-              <Search size={28} color="#1267FC" />
+              <Search size={28} color="blue" />
               Search stations
             </button>
           </div>
         </div>
         {/* Player principal */}
-        <div className="bg-gray-default border-gray-dark mt-10 flex items-center gap-4 rounded-t-lg border-b-2 px-11 py-4 text-black">
+        <div className="bg-gray-default border-gray-dark mt-4 flex items-center gap-4 rounded-t-lg border-b-2 px-11 py-4 text-black">
           {selectedStation ? (
             <>
               <button
@@ -48,9 +48,9 @@ export const MainContent = () => {
                 className="cursor-pointer hover:opacity-80"
               >
                 {playing ? (
-                  <Pause size={28} color="#000" fill="#000" />
+                  <Pause size={28} color="black" fill="black" />
                 ) : (
-                  <Play size={28} color="#000" fill="#000" />
+                  <Play size={28} color="black" fill="black" />
                 )}
               </button>
               <p className="mr-4 text-lg font-semibold uppercase">
@@ -83,9 +83,9 @@ export const MainContent = () => {
                   className="cursor-pointer rounded-full bg-black/50 p-3 hover:opacity-80"
                 >
                   {isPlaying ? (
-                    <Pause size={24} color="#000" fill="#000" />
+                    <Pause size={24} color="black" fill="black" />
                   ) : (
-                    <Play size={24} color="#000" fill="#000" />
+                    <Play size={24} color="black" fill="black" />
                   )}
                 </button>
 
@@ -103,13 +103,13 @@ export const MainContent = () => {
                     onClick={() => openEditModal(station)}
                     className="cursor-pointer hover:opacity-70"
                   >
-                    <Pencil size={24} color="#000" fill="#000" />
+                    <Pencil size={24} color="black" fill="black" />
                   </button>
                   <button
                     onClick={() => removeFromFavorites(station.id)}
                     className="cursor-pointer hover:opacity-70"
                   >
-                    <Trash size={24} color="#000" fill="#000" />
+                    <Trash size={24} color="black" fill="black" />
                   </button>
                 </div>
               </li>

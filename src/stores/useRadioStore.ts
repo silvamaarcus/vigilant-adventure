@@ -29,6 +29,8 @@ interface RadioStore {
   currentPage: number;
   setSearchTerm: (term: string) => void;
   setCurrentPage: (page: number) => void;
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
 }
 
 export const useRadioStore = create<RadioStore>((set, get) => ({
@@ -147,4 +149,6 @@ export const useRadioStore = create<RadioStore>((set, get) => ({
   currentPage: 1,
   setSearchTerm: (term) => set({ searchTerm: term }),
   setCurrentPage: (page) => set({ currentPage: page }),
+  isSidebarOpen: true,
+  toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
 }));

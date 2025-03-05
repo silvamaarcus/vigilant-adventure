@@ -25,6 +25,10 @@ interface RadioStore {
   setEditedCountry: (country: string) => void;
   setEditedTags: (tags: string) => void;
   isFavorite: (stationUrl: string) => boolean;
+  searchTerm: string;
+  currentPage: number;
+  setSearchTerm: (term: string) => void;
+  setCurrentPage: (page: number) => void;
 }
 
 export const useRadioStore = create<RadioStore>((set, get) => ({
@@ -139,4 +143,8 @@ export const useRadioStore = create<RadioStore>((set, get) => ({
       (station) => station.url_resolved === stationUrl,
     );
   },
+  searchTerm: '',
+  currentPage: 1,
+  setSearchTerm: (term) => set({ searchTerm: term }),
+  setCurrentPage: (page) => set({ currentPage: page }),
 }));

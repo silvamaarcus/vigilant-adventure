@@ -1,22 +1,27 @@
 import { useEffect } from "react";
-import { Check, Menu, Star } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Menu } from "lucide-react";
 import { useRadioStore } from "../stores/useRadioStore";
 
 export default function Sidebar() {
   const {
     stations,
     setStations,
-    // selectedStation,
     addToFavorites,
     setSelectedStation,
     favoriteStations,
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    setCurrentPage,
   } = useRadioStore();
 
   useEffect(() => {
     async function fetchStations() {
       try {
         const response = await fetch(
-          "https://de1.api.radio-browser.info/json/stations/search?limit=10&order=votes&reverse=true",
+          `https://de1.api.radio-browser.info/json/stations/search?` +
+            `limit=10&offset=${(currentPage - 1) * 10}&` +
+            `name=${searchTerm}&orderby=votes&reverse=true`,
         );
         const data = await response.json();
         setStations(data);
@@ -25,8 +30,12 @@ export default function Sidebar() {
       }
     }
 
-    fetchStations();
-  }, [setStations]);
+    const debounceTimer = setTimeout(() => {
+      fetchStations();
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm, currentPage, setStations]);
 
   const isStationFavorite = (stationUrl: string) => {
     return favoriteStations.some(
@@ -38,22 +47,23 @@ export default function Sidebar() {
     <aside className="bg-sidebar w-64 p-4 text-white">
       <div className="flex justify-end">
         <button className="cursor-pointer hover:opacity-80">
-          <Menu size={28} color="#1267FC" />
+          <Menu size={28} color="blue" />
         </button>
       </div>
 
       <input
         type="text"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setCurrentPage(1);
+        }}
         placeholder="Search here"
         className="bg-gray-light mt-4 mb-6 w-full rounded-lg px-4 py-2 text-base text-white"
       />
 
       <nav className="mt-4">
-        <span className="flex items-stretch space-x-2">
-          <Star size={24} color="yellow" fill="yellow" />
-          <h2 className="text-lg font-semibold">Top 10</h2>
-        </span>
-        <ul className="mt-2 space-y-3">
+        <ul className="space-y-3">
           {stations.length > 0 ? (
             stations.map((station) => (
               <li key={station.id} className="group relative">
@@ -65,7 +75,7 @@ export default function Sidebar() {
                 </button>
                 <button
                   onClick={() => addToFavorites(station)}
-                  className="absolute top-1/2 right-2 -translate-y-1/2"
+                  className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
                 >
                   {isStationFavorite(station.url_resolved) ? (
                     <Check size={28} color="blue" />
@@ -91,6 +101,23 @@ export default function Sidebar() {
           )}
         </ul>
       </nav>
+      {/* Adicionar controles de paginação */}
+      <div className="mt-4 flex items-center justify-center gap-4">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="flex cursor-pointer items-center rounded-full bg-black/70 p-2 hover:opacity-50 disabled:opacity-70"
+        >
+          <ChevronLeft size={28} color="white" />
+        </button>
+        {currentPage}
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          className="flex cursor-pointer items-center rounded-full bg-black/70 p-2 hover:opacity-50 disabled:opacity-70"
+        >
+          <ChevronRight size={28} color="white" />
+        </button>
+      </div>
     </aside>
   );
 }

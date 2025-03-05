@@ -58,7 +58,9 @@ export function Sidebar() {
         </button>
       </div>
 
-      <div className={`${isSidebarOpen ? "opacity-100" : "opacity-0 hidden"} transition-opacity duration-300`}>
+      <div
+        className={`${isSidebarOpen ? "opacity-100" : "hidden opacity-0"} transition-opacity duration-300`}
+      >
         <input
           type="text"
           value={searchTerm}
@@ -74,12 +76,17 @@ export function Sidebar() {
           <ul className="space-y-3">
             {stations.length > 0 ? (
               stations.map((station) => (
-                <li key={station.id} className="group relative">
+                <li
+                  key={station.id}
+                  className="group relative overflow-x-hidden"
+                >
                   <button
                     onClick={() => setSelectedStation(station.url_resolved)}
                     className="bg-gray-light block w-full rounded-lg p-2 text-left hover:opacity-80"
                   >
-                    {station.name}
+                    <span className="block max-w-[180px] truncate transition-all duration-300 ease-in-out hover:overflow-x-auto hover:whitespace-normal">
+                      {station.name}
+                    </span>
                   </button>
                   <button
                     onClick={() => addToFavorites(station)}

@@ -5,7 +5,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #2b2b30;
 
@@ -16,9 +15,9 @@
 }
 
 @theme {
-  --color-sidebar: #1E1E21;
-  --color-gray-default: #4D4D56;
-  --color-gray-light: #62626C;
-  --color-gray-dark: #605C5C;
+  --color-sidebar: #1e1e21;
+  --color-gray-default: #4d4d56;
+  --color-gray-light: #62626c;
+  --color-gray-dark: #605c5c;
   --font-primary: "Inter", sans-serif;
 }

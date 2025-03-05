@@ -1,4 +1,4 @@
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, Star, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Play, Pause } from "lucide-react";
@@ -12,6 +12,7 @@ interface Station {
 export default function Sidebar() {
   const [stations, setStations] = useState<Station[]>([]);
   const [selectedStation, setSelectedStation] = useState<string | null>(null);
+  const [favoriteStations, setFavoriteStations] = useState<Station[]>([]);
 
   const [playing, setPlaying] = useState(false);
 
@@ -32,6 +33,23 @@ export default function Sidebar() {
     fetchStations();
   }, []);
 
+  // Carregar rádios salvas ao iniciar a aplicação
+  useEffect(() => {
+    const savedStations = localStorage.getItem("favoriteStations");
+    if (savedStations) {
+      setFavoriteStations(JSON.parse(savedStations));
+    }
+  }, []);
+
+  // Salvar rádios favoritas no localStorage
+  useEffect(() => {
+    localStorage.setItem("favoriteStations", JSON.stringify(favoriteStations));
+  }, [favoriteStations]);
+
+  const addToFavorites = (station: Station) => {
+    setFavoriteStations([...favoriteStations, station]);
+  };
+
   const togglePlay = () => {
     const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
     if (!audio) return;
@@ -42,6 +60,12 @@ export default function Sidebar() {
       audio.play();
     }
     setPlaying(!playing);
+  };
+
+  const removeFromFavorites = (stationId: string) => {
+    setFavoriteStations((prevFavorites) =>
+      prevFavorites.filter((station) => station.id !== stationId),
+    );
   };
 
   return (
@@ -62,12 +86,18 @@ export default function Sidebar() {
           <ul className="space-y-3">
             {stations.length > 0 ? (
               stations.map((station) => (
-                <li key={station.id}>
+                <li key={station.id} className="relative">
                   <button
                     onClick={() => setSelectedStation(station.url_resolved)}
                     className="bg-gray-light block w-full rounded-lg p-2 text-left hover:opacity-80"
                   >
                     {station.name}
+                  </button>
+                  <button
+                    onClick={() => addToFavorites(station)}
+                    className="absolute top-1/2 right-2 -translate-y-1/2"
+                  >
+                    <Star size={20} color="yellow" />
                   </button>
                 </li>
               ))
@@ -97,7 +127,7 @@ export default function Sidebar() {
             <>
               <button
                 onClick={togglePlay}
-                className="text-white hover:opacity-80 cursor-pointer"
+                className="cursor-pointer text-white hover:opacity-80"
               >
                 {playing ? (
                   <Pause size={28} color="#000" fill="#000" />
@@ -113,6 +143,29 @@ export default function Sidebar() {
           ) : (
             <p className="text-gray-400">Selecione uma estação para ouvir.</p>
           )}
+        </div>
+
+        {/* Lista de rádios favoritas */}
+        <div className="mt-6">
+          <ul className="mt-2 space-y-2">
+            {favoriteStations.length > 0 ? (
+              favoriteStations.map((station) => (
+                <li
+                  key={station.id}
+                  className="bg-gray-light flex items-center justify-between rounded-lg p-2"
+                >
+                  <span>{station.name}</span>
+                  <button onClick={() => removeFromFavorites(station.id)}>
+                    <Trash size={20} color="red" />
+                  </button>
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-400">
+                Nenhuma rádio favorita adicionada.
+              </p>
+            )}
+          </ul>
         </div>
       </main>
     </div>

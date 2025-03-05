@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRadioStore } from "./stores/useRadioStore";
 
 import { MainContent } from "./components/MainContent";
-import { SidebarComponent} from "./components/Sidebar";
+import { SidebarComponent} from "./components/SidebarComponent";
 
 function App() {
   const { favoriteStations, setStations } = useRadioStore();

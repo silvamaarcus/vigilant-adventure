@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Check, ChevronLeft, ChevronRight, Menu } from "lucide-react";
 import { useRadioStore } from "../stores/useRadioStore";
 
-export function Sidebar() {
+export const Sidebar = () => {
   const {
     stations,
     setStations,
@@ -136,4 +136,4 @@ export function Sidebar() {
       </div>
     </aside>
   );
-}
+};

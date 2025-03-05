@@ -50,14 +50,30 @@ export default function Sidebar() {
   }, [favoriteStations]);
 
   const addToFavorites = (station: Station) => {
-    setFavoriteStations([...favoriteStations, station]);
+    // Verificando se a estação já existe nos favoritos
+    const stationExists = favoriteStations.some(
+      (favStation) => favStation.url_resolved === station.url_resolved,
+    );
+
+    // Adicionando a estação se ela não existir nos favoritos
+    if (!stationExists) {
+      const newStation = {
+        ...station,
+        id: `${station.id}-${Date.now()}`, // Forçando um ID único
+      };
+      setFavoriteStations([...favoriteStations, newStation]);
+    }
   };
 
   const removeFromFavorites = (stationId: string) => {
-    setFavoriteStations((prevFavorites) =>
-      prevFavorites.filter((station) => station.id !== stationId),
-    );
+    setFavoriteStations((prevFavorites) => {
+      const updatedFavorites = prevFavorites.filter(
+        (station) => station.id !== stationId,
+      );
+      return updatedFavorites;
+    });
   };
+
   const togglePlay = () => {
     const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
     if (!audio) return;

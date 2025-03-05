@@ -33,122 +33,128 @@ interface RadioStore {
   toggleSidebar: () => void;
 }
 
-export const useRadioStore = create<RadioStore>((set, get) => ({
-  stations: [],
-  selectedStation: null,
-  favoriteStations: [],
-  playing: false,
-  modalIsOpen: false,
-  editingStation: null,
-  editedName: "",
-  editedCountry: "",
-  editedTags: "",
+export const useRadioStore = create<RadioStore>((set, get) => {
+  const savedFavorites = localStorage.getItem("favoriteStations");
+  const initialFavorites = savedFavorites ? JSON.parse(savedFavorites) : [];
 
-  setStations: (stations) => set({ stations }),
+  return {
+    stations: [],
+    selectedStation: null,
+    favoriteStations: initialFavorites,
+    playing: false,
+    modalIsOpen: false,
+    editingStation: null,
+    editedName: "",
+    editedCountry: "",
+    editedTags: "",
 
-  setSelectedStation: (url) => set({ selectedStation: url }),
+    setStations: (stations) => set({ stations }),
 
-  addToFavorites: (station) => {
-    const { favoriteStations } = get();
-    const stationExists = favoriteStations.some(
-      (favStation) => favStation.url_resolved === station.url_resolved,
-    );
+    setSelectedStation: (url) => set({ selectedStation: url }),
 
-    if (!stationExists) {
-      const newStation = {
-        ...station,
-        id: `${station.id}-${Date.now()}`,
-      };
-      set({ favoriteStations: [...favoriteStations, newStation] });
-    }
-  },
+    addToFavorites: (station) => {
+      const { favoriteStations } = get();
+      const stationExists = favoriteStations.some(
+        (favStation) => favStation.url_resolved === station.url_resolved,
+      );
 
-  removeFromFavorites: (stationId) => {
-    const { favoriteStations } = get();
-    set({
-      favoriteStations: favoriteStations.filter(
-        (station) => station.id !== stationId,
-      ),
-    });
-  },
+      if (!stationExists) {
+        const newStation = {
+          ...station,
+          id: `${station.id}-${Date.now()}`,
+        };
+        set({ favoriteStations: [...favoriteStations, newStation] });
+      }
+    },
 
-  togglePlay: () => {
-    const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
-    if (!audio) return;
+    removeFromFavorites: (stationId) => {
+      const { favoriteStations } = get();
+      set({
+        favoriteStations: favoriteStations.filter(
+          (station) => station.id !== stationId,
+        ),
+      });
+    },
 
-    const { playing } = get();
-    if (playing) {
-      audio.pause();
-      set({ playing: false });
-    } else {
-      audio.play();
-      set({ playing: true });
-    }
-  },
+    togglePlay: () => {
+      const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
+      if (!audio) return;
 
-  handleStationSelection: (stationUrl) => {
-    const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
-    const { selectedStation } = get();
-    if (audio && selectedStation) {
-      audio.pause();
-    }
-    set({
-      selectedStation: stationUrl,
-      playing: true,
-    });
-  },
+      const { playing } = get();
+      if (playing) {
+        audio.pause();
+        set({ playing: false });
+      } else {
+        audio.play();
+        set({ playing: true });
+      }
+    },
 
-  openEditModal: (station) => {
-    set({
-      editingStation: station,
-      editedName: station.name,
-      editedCountry: station.country || "",
-      editedTags: station.tags || "",
-      modalIsOpen: true,
-    });
-  },
+    handleStationSelection: (stationUrl) => {
+      const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
+      const { selectedStation } = get();
+      if (audio && selectedStation) {
+        audio.pause();
+      }
+      set({
+        selectedStation: stationUrl,
+        playing: true,
+      });
+    },
 
-  handleEditSave: () => {
-    const {
-      editingStation,
-      editedName,
-      editedCountry,
-      editedTags,
-      favoriteStations,
-    } = get();
-    if (!editingStation) return;
+    openEditModal: (station) => {
+      set({
+        editingStation: station,
+        editedName: station.name,
+        editedCountry: station.country || "",
+        editedTags: station.tags || "",
+        modalIsOpen: true,
+      });
+    },
 
-    const updatedFavorites = favoriteStations.map((station) =>
-      station.id === editingStation.id
-        ? {
-            ...station,
-            name: editedName,
-            country: editedCountry,
-            tags: editedTags,
-          }
-        : station,
-    );
+    handleEditSave: () => {
+      const {
+        editingStation,
+        editedName,
+        editedCountry,
+        editedTags,
+        favoriteStations,
+      } = get();
+      if (!editingStation) return;
 
-    set({
-      favoriteStations: updatedFavorites,
-      modalIsOpen: false,
-    });
-  },
+      const updatedFavorites = favoriteStations.map((station) =>
+        station.id === editingStation.id
+          ? {
+              ...station,
+              name: editedName,
+              country: editedCountry,
+              tags: editedTags,
+            }
+          : station,
+      );
 
-  setModalIsOpen: (isOpen) => set({ modalIsOpen: isOpen }),
-  setEditedName: (name) => set({ editedName: name }),
-  setEditedCountry: (country) => set({ editedCountry: country }),
-  setEditedTags: (tags) => set({ editedTags: tags }),
-  isFavorite: (stationUrl) => {
-    const { favoriteStations } = get();
-    return favoriteStations.some(
-      (station) => station.url_resolved === stationUrl,
-    );
-  },
-  searchTerm: '',
-  currentPage: 1,
-  setSearchTerm: (term) => set({ searchTerm: term }),
-  setCurrentPage: (page) => set({ currentPage: page }),
-  isSidebarOpen: true,
-  toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
-}));
+      set({
+        favoriteStations: updatedFavorites,
+        modalIsOpen: false,
+      });
+    },
+
+    setModalIsOpen: (isOpen) => set({ modalIsOpen: isOpen }),
+    setEditedName: (name) => set({ editedName: name }),
+    setEditedCountry: (country) => set({ editedCountry: country }),
+    setEditedTags: (tags) => set({ editedTags: tags }),
+    isFavorite: (stationUrl) => {
+      const { favoriteStations } = get();
+      return favoriteStations.some(
+        (station) => station.url_resolved === stationUrl,
+      );
+    },
+    searchTerm: "",
+    currentPage: 1,
+    setSearchTerm: (term) => set({ searchTerm: term }),
+    setCurrentPage: (page) => set({ currentPage: page }),
+    isSidebarOpen: true,
+    toggleSidebar: () =>
+      set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
+  };
+});

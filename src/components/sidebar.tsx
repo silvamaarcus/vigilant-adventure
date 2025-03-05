@@ -80,10 +80,22 @@ export default function Sidebar() {
 
     if (playing) {
       audio.pause();
+      setPlaying(false);
     } else {
       audio.play();
+      setPlaying(true);
     }
-    setPlaying(!playing);
+    // setPlaying(!playing);
+  };
+
+  const handleStationSelection = (stationUrl: string) => {
+    const audio = document.getElementById("radioPlayer") as HTMLAudioElement;
+    if (audio && selectedStation) {
+      audio.pause();
+    }
+
+    setSelectedStation(stationUrl);
+    setPlaying(true);
   };
 
   const openEditModal = (station: Station) => {
@@ -180,14 +192,18 @@ export default function Sidebar() {
               <p className="mr-4 text-lg font-semibold uppercase">
                 {stations.find((s) => s.url_resolved === selectedStation)?.name}
               </p>
-              <audio id="radioPlayer" src={selectedStation}></audio>
+              <audio
+                id="radioPlayer"
+                src={selectedStation}
+                autoPlay={playing}
+              ></audio>
             </>
           ) : (
             <p className="text-gray-400">Selecione uma estação para ouvir.</p>
           )}
         </div>
 
-        <ul className="bg-gray-default space-y-2 rounded-b-lg px-1 py-4">
+        {/* <ul className="bg-gray-default space-y-2 rounded-b-lg px-1 py-4">
           {favoriteStations.length > 0 ? (
             favoriteStations.map((station) => {
               const isPlaying =
@@ -249,6 +265,55 @@ export default function Sidebar() {
               Nenhuma rádio favorita adicionada.
             </p>
           )}
+        </ul> */}
+
+        <ul className="bg-gray-default space-y-2 rounded-b-lg px-1 py-4">
+          {favoriteStations.map((station) => {
+            const isPlaying =
+              selectedStation === station.url_resolved && playing;
+
+            return (
+              <li
+                key={station.id}
+                className={`bg-gray-light flex items-center justify-between rounded-lg px-8 py-3 ${isPlaying ? "font-semibold" : ""}`}
+              >
+                <button
+                  onClick={() => handleStationSelection(station.url_resolved)}
+                  className="cursor-pointer rounded-full bg-black/50 p-3 hover:opacity-80"
+                >
+                  {isPlaying ? (
+                    <Pause size={24} color="#000" fill="#000" />
+                  ) : (
+                    <Play size={24} color="#000" fill="#000" />
+                  )}
+                </button>
+
+                <div className="flex flex-1 flex-col px-4 text-black">
+                  <span className="text-lg font-semibold">{station.name}</span>
+                  <span>
+                    {station.country}
+                    {station.tags && ", "}
+                    {station.tags}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <button
+                    onClick={() => openEditModal(station)}
+                    className="cursor-pointer hover:opacity-70"
+                  >
+                    <Pencil size={24} color="#000" fill="#000" />
+                  </button>
+                  <button
+                    onClick={() => removeFromFavorites(station.id)}
+                    className="cursor-pointer hover:opacity-70"
+                  >
+                    <Trash size={24} color="#000" fill="#000" />
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
 
         <Modal

@@ -1,9 +1,11 @@
-import Sidebar from "./components/sidebar";
+import Sidebar from "./components/Sidebar";
+import { Main } from "./components/Main";
 
 function App() {
   return (
-    <div>
+    <div className="flex h-screen">
       <Sidebar />
+      <Main />
     </div>
   );
 }

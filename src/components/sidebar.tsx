@@ -1,4 +1,4 @@
-import { Menu, Search, Star, Trash } from "lucide-react";
+import { Menu, Pencil, Search, Star, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Play, Pause } from "lucide-react";
@@ -7,6 +7,8 @@ interface Station {
   id: string;
   name: string;
   url_resolved: string;
+  country?: string;
+  tags?: string;
 }
 
 export default function Sidebar() {
@@ -122,7 +124,7 @@ export default function Sidebar() {
         </div>
 
         {/* Player de rádio */}
-        <div className="bg-gray-light border-gray-dark mt-10 flex items-center justify-center gap-4 rounded-lg border-b p-4 text-black">
+        <div className="bg-gray-default border-gray-dark mt-10 flex items-center gap-4 rounded-t-lg border-b-2 px-11 py-4 text-black">
           {selectedStation ? (
             <>
               <button
@@ -146,20 +148,69 @@ export default function Sidebar() {
         </div>
 
         {/* Lista de rádios favoritas */}
-        <div className="mt-6">
-          <ul className="mt-2 space-y-2">
+        <div>
+          <ul className="bg-gray-default space-y-2 rounded-b-lg px-1 py-4">
             {favoriteStations.length > 0 ? (
-              favoriteStations.map((station) => (
-                <li
-                  key={station.id}
-                  className="bg-gray-light flex items-center justify-between rounded-lg p-2"
-                >
-                  <span>{station.name}</span>
-                  <button onClick={() => removeFromFavorites(station.id)}>
-                    <Trash size={20} color="red" />
-                  </button>
-                </li>
-              ))
+              favoriteStations.map((station) => {
+                const isPlaying =
+                  selectedStation === station.url_resolved && playing;
+
+                return (
+                  <li
+                    key={station.id}
+                    className={`bg-gray-light flex items-center justify-between rounded-lg px-8 py-3 text-black ${
+                      isPlaying ? "font-semibold" : ""
+                    }`}
+                  >
+                    <button
+                      onClick={() => {
+                        if (selectedStation === station.url_resolved) {
+                          togglePlay();
+                        } else {
+                          setSelectedStation(station.url_resolved);
+                          setPlaying(true);
+                        }
+                      }}
+                      className="cursor-pointer rounded-full bg-black/50 p-3 hover:opacity-80"
+                    >
+                      {isPlaying ? (
+                        <Pause size={24} color="#000" fill="#000" />
+                      ) : (
+                        <Play size={24} color="#000" fill="#000" />
+                      )}
+                    </button>
+
+                    {/* Rádio */}
+                    <div className="flex flex-1 flex-col px-4">
+                      <span className="text-lg font-semibold">
+                        {station.name}
+                      </span>
+                      <span>
+                        {station.country}
+                        {station.tags &&
+                          station.tags.split(",").slice(0, 3).length > 0 &&
+                          ", "}
+                        {station.tags &&
+                          station.tags.split(",").slice(0, 3).join(", ")}
+                      </span>
+                    </div>
+
+                    {/* Botoes de ação */}
+                    <div className="flex items-center gap-6">
+                      <button className="cursor-pointer hover:opacity-70">
+                        <Pencil size={24} color="#000" fill="#000" />
+                      </button>
+
+                      <button
+                        onClick={() => removeFromFavorites(station.id)}
+                        className="cursor-pointer hover:opacity-70"
+                      >
+                        <Trash size={24} color="#000" fill="#000" />
+                      </button>
+                    </div>
+                  </li>
+                );
+              })
             ) : (
               <p className="text-gray-400">
                 Nenhuma rádio favorita adicionada.

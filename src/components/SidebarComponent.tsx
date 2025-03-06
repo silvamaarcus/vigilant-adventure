@@ -3,6 +3,9 @@ import { Check, ChevronLeft, ChevronRight, Menu } from "lucide-react";
 import { useRadioStore } from "../stores/useRadioStore";
 
 export const SidebarComponent = () => {
+
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const {
     stations,
     setStations,
@@ -21,7 +24,7 @@ export const SidebarComponent = () => {
     async function fetchStations() {
       try {
         const response = await fetch(
-          `https://de1.api.radio-browser.info/json/stations/search?` +
+          `${apiUrl}?` +
             `limit=10&offset=${(currentPage - 1) * 10}&` +
             `name=${searchTerm}&orderby=votes&reverse=true`,
         );
@@ -37,7 +40,7 @@ export const SidebarComponent = () => {
     }, 500);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchTerm, currentPage, setStations]);
+  }, [searchTerm, currentPage, apiUrl, setStations]);
 
   const isStationFavorite = (stationUrl: string) => {
     return favoriteStations.some(

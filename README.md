@@ -77,8 +77,15 @@ yarn build
 
 5. **Executando com Docker (opcional):**
 
+Criar um arquivo `.env` na raiz do projeto com as seguintes variáveis de ambiente:
+
 ```bash
-docker run -p 3000:3000 radio-browser
+VITE_API_URL=https://de1.api.radio-browser.info/json/stations/search
+```
+Após criar o arquivo, execute o seguinte comando para iniciar o container:
+
+```bash
+docker-compose up --build
 ```
 
 A aplicação estará disponível em http://localhost:3000.
@@ -119,3 +126,7 @@ O projeto foi desenvolvido utilizando as versões mais recentes das tecnologias 
 Este projeto foi desenvolvido como parte de um desafio proposto pela Coodesh. Veja meu repositório no GitHub para obter mais informações.
 
 > This is a challenge by [Coodesh](https://coodesh.com/)
+
+## Conclusão
+
+Gostaria de expressar minha sincera gratidão à plataforma Coodesh pela incrível oportunidade de participar deste projeto tão enriquecedor. A experiência foi extremamente valiosa para mim, e estou muito feliz por ter tido a chance de contribuir e aprender com todos os envolvidos. Espero que este projeto possa ser útil para a comunidade e que possa servir como um exemplo de como a tecnologia pode ser usada para resolver problemas reais.

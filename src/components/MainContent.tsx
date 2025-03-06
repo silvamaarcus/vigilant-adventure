@@ -130,7 +130,7 @@ export const MainContent = () => {
           overlayClassName="fixed inset-0 bg-black/80"
         >
           <div className="bg-gray-dark w-full max-w-md rounded-lg p-6 shadow-lg">
-            <h2 className="mb-4 text-xl font-semibold">Editar Rádio</h2>
+            <h2 className="mb-4 text-xl font-semibold">Edit Radio</h2>
 
             <div className="space-y-3">
               <input

@@ -49,7 +49,7 @@ export const SidebarComponent = () => {
     <aside
       className={`${isSidebarOpen ? "w-full sm:w-64" : "w-12"} bg-sidebar flex-shrink-0 p-4 text-white transition-all duration-300`}
     >
-      <div className="flex justify-end">
+      <div className="flex pl-5 justify-end">
         <button
           className="cursor-pointer hover:opacity-80"
           onClick={toggleSidebar}

@@ -1,141 +1,121 @@
-# Radio Browser Challenge
+# Radio Browser
 
-## Introdução
+Uma aplicação que permite aos usuários reviverem os tempos das rádios antigas, oferecendo funcionalidades de busca, reprodução e gerenciamento de estações de rádio favoritas.
 
-Este é um desafio para testar seus conhecimentos de Front-end;
+## Tecnologias Utilizadas
 
-O objetivo é avaliar a sua forma de estruturação e autonomia em decisões para construir algo escalável utilizando o Framework sugerido na vaga aplicada.
+Para o desenvolvimento deste projeto, foram utilizadas tecnologias modernas que garantem desempenho, escalabilidade e uma excelente experiência do usuário:
 
-[SPOILER] As instruções de entrega e apresentação do challenge estão no final deste Readme (=
+- **Linguagem:** [TypeScript](https://www.typescriptlang.org/) – escolhido por sua tipagem estática e melhoria na manutenção do código.
+- **Framework:** [React](https://react.dev/) – utilizado para criar uma interface interativa e dinâmica.
+- **Ferramentas e Bibliotecas:**
+  - [Vite](https://vitejs.dev/) (ferramenta de build) – ferramenta de build rápida para otimizar o desenvolvimento.
+  - [Tailwind CSS 4.0](https://tailwindcss.com/) (estilização) – framework de estilização que permite um design responsivo e consistente.
+  - [Zustand](https://github.com/pmndrs/zustand) (gerenciamento de estado) – gerenciamento de estado simples e eficiente.
+  - [React Modal](https://www.npmjs.com/package/react-modal) (componente de modal) – utilizado para criar modais acessíveis e customizáveis.
+  - [Lucide Icons](https://lucide.dev/) (ícones) – coleção de ícones modernos para melhorar a interface do usuário.
+  - [Docker](https://www.docker.com/) (containerização) – utilizado para containerizar a aplicação e facilitar a distribuição e execução do projeto.
 
-### Antes de começar
- 
-- O projeto deve utilizar a Linguagem e Framework específica na avaliação. Por exempo: Next.js, React.js, Nuxt.js, Vue.js, Angular e entre outras;
-- Considere como deadline da avaliação a partir do início do teste. Caso tenha sido convidado a realizar o teste e não seja possível concluir dentro deste período, avise a pessoa que o convidou para receber instruções sobre o que fazer.
-- Documentar todo o processo de investigação para o desenvolvimento da atividade (README.md no seu repositório); os resultados destas tarefas são tão importantes do que o seu processo de pensamento e decisões à medida que as completa, por isso tente documentar e apresentar os seus hipóteses e decisões na medida do possível.
+Essas tecnologias foram escolhidas para garantir um desenvolvimento eficiente, seguindo as melhores práticas do mercado e proporcionando uma aplicação leve, rápida e responsiva.
 
-## Case
+## Funcionalidades
 
-As pessoas estão com saudades de voltar nos tempos antigos e uma das melhores maneiras de solucionar esse problema é trazer a rádio de volta.
-Sua tarefa para esse case será desenvolver uma aplicação que consuma uma API de rádio para que os usuários possam desfrutar e relembrar desse tempo, seguindo os requisitos propostos neste desafio.
+- **Adicionar Rádio à Lista:** Permite que o usuário adicione estações de rádio à sua lista pessoal.
+- **Visualizar Lista de Rádios:** Exibe as estações de rádio que o usuário adicionou à sua lista.
+- **Remover Rádio da Lista:** Possibilita a remoção de estações de rádio da lista pessoal.
+- **Editar Informações da Rádio:** Permite a edição dos detalhes de uma estação de rádio selecionada.
+- **Reproduzir e Parar Rádio:** Funcionalidade de reproduzir (play) e parar (stop) a transmissão de uma estação de rádio.
+- **Pesquisar Rádios:** Busca por estações de rádio com base no nome, país ou idioma, com paginação de 10 rádios por vez.
+- **Persistência de Dados:** As informações das rádios são salvas localmente para que, ao retornar à aplicação, o usuário encontre suas estações previamente adicionadas.
 
-## Recursos
+## Pré-requisitos
 
-1. Estudar a documentação da REST API: https://de1.api.radio-browser.info/json/stations/search?limit=10
-2. Utilizar Frameworks CSS, recomendamos alguns como:
+- [Node.js](https://nodejs.org/) (versão 14 ou superior)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/) (gerenciadores de pacotes)
+- [Docker](https://www.docker.com/) (para execução em container, opcional)
 
-    - Tailwind CSS: https://tailwindcss.com/
-    - Material UI: https://material-ui.com/
-    - Angular Material: https://material.angular.io/
-    - Bootstrap: https://getbootstrap.com/
-    - Bulma: https://bulma.io/
-    - Outro de sua preferência
+## Instalação e Uso
 
-## Tela para Desktop
+1. **Clone o repositório:**
 
-![Desktop](assets/desktop.png)
-
-## Tela para Mobile
-
-![Mobile](assets/mobile.png)
-
-## API
-
-Para obter os dados, utilizaremos a API do Radio Browser:
-
-- https://de1.api.radio-browser.info/json/stations/search?limit=10
-
-Exemplo da resposta:
-
-```json
-[
-    {
-    "changeuuid": "f6a6d140-c065-4e3b-9bda-3fb752148ae7",
-    "stationuuid": "a25700ef-e952-4b73-8b4e-b92d938cb020",
-    "serveruuid": "46ce76c5-203b-43e3-b709-5748219f9fcd",
-    "name": "\tNewstalk ZB Auckland",
-    "url": "https://ais-nzme.streamguys1.com/nz_002_aac",
-    "url_resolved": "https://ais-nzme.streamguys1.com/nz_002_aac",
-    "homepage": "https://www.newstalkzb.co.nz/",
-    "favicon": "https://www.newstalkzb.co.nz/content/news/images/interface/icons/newstalkzb/apple-touch-icon.png",
-    "tags": "",
-    "country": "New Zealand",
-    "countrycode": "NZ",
-    "iso_3166_2": null,
-    "state": "BOP",
-    "language": "",
-    "languagecodes": "",
-    "votes": 41,
-    "lastchangetime": "2022-05-11 08:42:03",
-    "lastchangetime_iso8601": "2022-05-11T08:42:03Z",
-    "codec": "AAC+",
-    "bitrate": 65,
-    "hls": 0,
-    "lastcheckok": 1,
-    "lastchecktime": "2022-08-01 16:52:00",
-    "lastchecktime_iso8601": "2022-08-01T16:52:00Z",
-    "lastcheckoktime": "2022-08-01 16:52:00",
-    "lastcheckoktime_iso8601": "2022-08-01T16:52:00Z",
-    "lastlocalchecktime": "2022-08-01 12:24:26",
-    "lastlocalchecktime_iso8601": "2022-08-01T12:24:26Z",
-    "clicktimestamp": "2022-08-02 08:26:09",
-    "clicktimestamp_iso8601": "2022-08-02T08:26:09Z",
-    "clickcount": 51,
-    "clicktrend": 2,
-    "ssl_error": 0,
-    "geo_lat": null,
-    "geo_long": null,
-    "has_extended_info": false
-  },
-]
+```bash
+   git clone https://github.com/seu-usuario/radio-browser.git
+   cd radio-browser
 ```
 
-## Obrigatórios
+2. **Instale as dependências:**
 
-**Obrigatório 1 -** Você deverá atender aos seguintes casos de uso:
+```bash
+npm install
+```
 
-- Como usuário, posso adicionar uma rádio na minha lista;
-- Como usuário, ver minha lista de rádios adicionadas;
-- Como usuário, posso remover uma rádio da minha lista;
-- Como usuário posso editar informações da rádio escolhida;
-- Como usuário, posso ouvir a rádio selecionado ao clicar o play;
-- Como usuário, posso parar de ouvir a rádio selecionada ao clicar no stop;
-- Como usuário, posso pesquisar a rádio que tenho interesse.
+Ou se preferir, use o Yarn:
 
-**Obrigatório 2 -** Filtrar por nome da rádio, país ou idioma com paginação mostrando 10 rádios por vez.
+```bash
+yarn install
+```
 
-**Obrigatório 3 -** Salvar as informações para quando o usuário retornar na aplicação deve ter as rádios salvas.
+3. **Inicie o servidor de desenvolvimento:**
 
-**Obrigatório 4 -** Seguir a base do [wireframe](https://www.figma.com/file/TDuhDdbwdzIVQjNV3GF9Qi/Radio?node-id=0%3A1) (estilização ao seu critério)
+```bash
+npm run dev
+```
 
-## Extras
+A aplicação estará disponível em http://localhost:5173
 
-Além do desafio proposto temos alguns diferenciais:
+4. **Build para produção:**
 
-**Diferencial 1 -** Escrever Unit Tests ou E2E Test. Escolher a melhor abordagem e biblioteca;
+```bash
+npm run build
+```
 
-**Diferencial 2 -** Configurar Docker no Projeto para facilitar o Deploy da equipe de DevOps;
+Ou se preferir, use o Yarn:
 
-**Diferencial 3 -** Publique o projeto em alguma plataforma, como por exemplo a [Vercel](https://vercel.com/), [Netlify](https://www.netlify.com/) ou outra de sua preferência.
+```bash
+yarn build
+```
 
-## Readme do Repositório
+5. **Executando com Docker (opcional):**
 
-- Deve conter o título do projeto
-- Uma descrição sobre o projeto em frase
-- Deve conter uma lista com linguagem, framework e/ou tecnologias usadas
-- Como instalar e usar o projeto (instruções)
-- Não esqueça o [.gitignore](https://www.toptal.com/developers/gitignore)
-- Se está usando github pessoal, referencie que é um challenge by coodesh:  
+```bash
+docker run -p 3000:3000 radio-browser
+```
 
->  This is a challenge by [Coodesh](https://coodesh.com/)
+A aplicação estará disponível em http://localhost:3000.
 
-## Finalização e Instruções para a Apresentação
+## Arquivo .gitignore
 
-1. Adicione o link do repositório com a sua solução no teste
-2. Adicione o link da apresentação do seu projeto no README.md.
-3. Verifique se o Readme está bom e faça o commit final em seu repositório;
-4. Envie e aguarde as instruções para seguir. Sucesso e boa sorte. =)
+Certifique-se de que o arquivo `.gitignore` inclua as seguintes entradas para evitar o versionamento de arquivos desnecessários:
 
-## Suporte
+```bash
+node_modules/
+dist/
+.env
+.vscode/
+.DS_Store
+```
 
-Use a [nossa comunidade](https://discord.gg/rdXbEvjsWu) para tirar dúvidas sobre o processo ou envie uma mensagem diretamente a um especialista no chat da plataforma. 
+## Responsividade e Design
+
+O projeto foi desenvolvido utilizando as versões mais recentes das tecnologias mencionadas e segue um design responsivo, garantindo uma experiência consistente em dispositivos móveis, tablets e desktops. O desenvolvimento foi baseado em um wireframe fornecido, com adaptações realizadas para alcançar um design pixel perfect.
+
+## Imagens
+
+**Desktop**
+![Image](https://github.com/user-attachments/assets/992f44de-8f86-4d14-bfb5-a0641732a50f)
+![Image](https://github.com/user-attachments/assets/ca0041be-b759-4118-9e28-60555a8332ff)
+
+**Mobile**
+![Image](https://github.com/user-attachments/assets/4b043652-c440-4da5-b3ab-7f6281a5a22a)
+![Image](https://github.com/user-attachments/assets/5baa4954-948c-4f94-888f-8d5b9803e1d2)
+
+## Links
+
+- [Repositório no GitHub](https://github.com/silvamaarcus/vigilant-adventure)
+- [Deploy na Vercel](https://vigilant-adventure-nu.vercel.app/)
+
+## Observações
+
+Este projeto foi desenvolvido como parte de um desafio proposto pela Coodesh. Veja meu repositório no GitHub para obter mais informações.
+
+> This is a challenge by [Coodesh](https://coodesh.com/)

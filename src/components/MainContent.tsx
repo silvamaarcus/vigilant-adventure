@@ -23,7 +23,14 @@ export const MainContent = () => {
     setEditedName,
     setEditedCountry,
     setEditedTags,
+    searchTerm,
+    setSearchTerm,
   } = useRadioStore();
+
+  // Função para filtrar as estações dentro das estações favoritas
+  const filteredStations = favoriteStations.filter((station) =>
+    station.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -33,9 +40,15 @@ export const MainContent = () => {
         <div className="mt-4 flex items-center justify-between">
           <p className="uppercase">Favorite Radios</p>
           <div className="hidden md:block">
-            <button className="flex cursor-pointer items-center gap-1 hover:opacity-80">
+            <button className="flex cursor-pointer items-center hover:opacity-80">
               <Search size={28} color="blue" />
-              Search stations
+              <input
+                type="text"
+                placeholder="Search stations"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="px-3 py-1 focus:outline-none"
+              />
             </button>
           </div>
         </div>
@@ -71,7 +84,7 @@ export const MainContent = () => {
 
         {/* Lista de estações favoritas */}
         <ul className="bg-gray-default space-y-2 rounded-b-lg px-1 py-4">
-          {favoriteStations.map((station) => {
+          {filteredStations.map((station) => {
             const isPlaying =
               selectedStation === station.url_resolved && playing;
 
